@@ -5,7 +5,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 
 import DBConfig from '../config/DBConfig';
-import { AuthRoutes, ProfessorRoutes, StudentRoutes } from '../routes/Index';
+import { AuthRoutes, ProfessorRoutes, StudentRoutes, KardexRoutes } from '../routes/Index';
 
 class Server {
     private app : Application;
@@ -14,6 +14,7 @@ class Server {
         auth: '/api/auth',
         professor: '/api/professor',
         student: '/api/student',
+        kardex: '/api/kardex',
     }
 
     constructor() {
@@ -54,6 +55,7 @@ class Server {
         this.app.use( this.apiPaths.auth, AuthRoutes );
         this.app.use( this.apiPaths.professor, ProfessorRoutes );
         this.app.use( this.apiPaths.student, StudentRoutes );
+        this.app.use( this.apiPaths.kardex, KardexRoutes );
     }
 
     listen() {

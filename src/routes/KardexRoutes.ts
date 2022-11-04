@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { check } from 'express-validator';
 import Student from '../controller/Student';
 
-class StudentRoutes {
+class KardexRoutes {
     public router: Router;
     constructor() {
         this.router = Router();
@@ -10,10 +10,10 @@ class StudentRoutes {
     }
 
     private routes() {
-        this.router.get( '/', Student.getAll );
-        this.router.get( '/:id', Student.getById );
+        this.router.get( '/', Student.getAllKardex );
+        this.router.get( '/:id', Student.getKardexById );
     }
 }
 
-const studentRoutes = new StudentRoutes();
-export default studentRoutes.router;
+const kardexRoutes = new KardexRoutes();
+export default kardexRoutes.router;

@@ -6,9 +6,11 @@
 import AuthRoutes from './AuthRoutes';
 import ProfessorRoutes from './ProfessorRoutes';
 import StudentRoutes from './StudentRoutes';
+import KardexRoutes from './KardexRoutes';
 
 export {
     AuthRoutes,
     ProfessorRoutes,
-    StudentRoutes
+    StudentRoutes,
+    KardexRoutes
 }
