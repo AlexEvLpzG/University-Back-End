@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { check } from 'express-validator';
+import Professor from '../controller/Professor';
 
 class ProfessorRoutes {
     public router: Router;
@@ -9,7 +10,8 @@ class ProfessorRoutes {
     }
 
     private routes() {
-        this.router.get( '/id' );
+        this.router.get( '/:id', Professor.getById );
+        this.router.get( '/', Professor.getAll );
     }
 }
 
