@@ -1,8 +1,12 @@
 import { DataTypes } from 'sequelize';
-import DBConfig from '../../../config/DBConfig';
-import { StudentDocumentsInstance } from "../interfaces/Schemas";
+import DBConfig from '../../config/DBConfig';
+import { StudentDocumentsInstance } from './interfaces/Schemas';
 
-const ViewStudent = DBConfig.define<StudentDocumentsInstance>( 'estudiantes_views', {
+const StudentModel = DBConfig.define<StudentDocumentsInstance>( 'uni_alumnos', {
+    matricula: {
+        type: DataTypes.STRING,
+        primaryKey: true
+    },
     ape_pat: {
         type: DataTypes.STRING
     },
@@ -45,15 +49,18 @@ const ViewStudent = DBConfig.define<StudentDocumentsInstance>( 'estudiantes_view
     fec_nacimiento: {
         type: DataTypes.STRING
     },
-    nombre_dependencia: {
+    cve_dependencia: {
         type: DataTypes.STRING
     },
-    nombre_carrera: {
-        type: DataTypes.STRING
+    cve_carrera: {
+        type: DataTypes.INTEGER
     },
-    ROLE: {
-        type: DataTypes.STRING
+    id_role: {
+        type: DataTypes.INTEGER
     },
+    password: {
+        type: DataTypes.STRING
+    }
 });
 
-export default ViewStudent;
+export default StudentModel;

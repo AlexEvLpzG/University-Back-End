@@ -1,17 +1,9 @@
 import { DataTypes, Model } from 'sequelize';
 import DBConfig from '../../../config/DBConfig';
+import { ProfessorDocumentsInstance } from '../interfaces/Schemas';
 
-interface ViewDocumentsIntance extends Model {
-    ape_pat: string;
-    ape_mat: string;
-    nombre: string;
-    email: string;
-    teléfono: string;
-    nombre_dependencia: string;
-    ROLE: string;
-}
 
-const ViewProfessor = DBConfig.define<ViewDocumentsIntance>( 'profesores_view', {
+const ViewProfessor = DBConfig.define<ProfessorDocumentsInstance>( 'profesores_view', {
     ape_pat: {
         type: DataTypes.STRING
     },

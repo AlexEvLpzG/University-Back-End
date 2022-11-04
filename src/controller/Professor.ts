@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import ViewProfessor from '../models/schemas/view/viewProfessor';
+import ViewProfessor from '../models/schemas/view/ViewProfessor';
 
 class Professor {
     public static async getAll( req: Request, res: Response ): Promise<Response> {
