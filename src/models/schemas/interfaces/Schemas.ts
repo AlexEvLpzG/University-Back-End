@@ -19,6 +19,7 @@ export interface StudentDocumentsInstance extends Model {
     password: string;
     id_role: number;
     cve_dependencia: string;
+    cve_carrera: string;
 }
 
 export interface ProfessorDocumentsInstance extends Model {

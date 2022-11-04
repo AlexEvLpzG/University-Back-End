@@ -4,6 +4,8 @@ import ProfesorModel from '../models/schemas/ProfesorModel';
 import bcryptjs from 'bcryptjs';
 import Jwt from '../helpers/Jwt';
 import RoleModel from '../models/schemas/RoleModel';
+import DependencyModel from '../models/schemas/DependencyModel';
+import CareerModel from '../models/schemas/CareerModel';
 
 class Auth {
     public static async LoginProfessor( req: Request, res: Response ): Promise<Response> {
@@ -27,7 +29,9 @@ class Auth {
                     msg: 'Email / Password incorrect - Email does not exist - Password incorrecto'
                 });
             }
+
             const role = await RoleModel.findByPk( professorFound.id_role );
+            const dependency = await DependencyModel.findOne({ where: { cve_dependencia: professorFound.cve_dependencia } });
             const Token = await Jwt.generateJWT( professorFound.cve_profesor, professorFound.nombre, role?.description  );
             const ProfessorData: any = {
                 cve_profesor: professorFound.cve_profesor,
@@ -36,7 +40,12 @@ class Auth {
                 nombre:professorFound.nombre,
                 email:professorFound.email,
                 teléfono:professorFound.teléfono,
-                cve_dependencia: professorFound.cve_dependencia,
+                cve_dependencia: {
+                    id_dependencia: dependency?.id_dependencia,
+                    cve_dependencia: dependency?.cve_dependencia,
+                    nombre_dependencia: dependency?.nombre_dependencia,
+                    direccion: dependency?.direccion
+                },
                 role: {
                     id_role: role?.id_role,
                     description: role?.description
@@ -70,7 +79,10 @@ class Auth {
                     msg: 'Email / Password incorrect - Email does not exist - Password incorrecto'
                 });
             }
+
             const role = await RoleModel.findByPk( studentFound.id_role );
+            const dependency = await DependencyModel.findOne({ where: { cve_dependencia: studentFound.cve_dependencia } });
+            const career = await CareerModel.findOne({ where: { cve_carrera: studentFound.cve_carrera } });
             const Token = await Jwt.generateJWT( studentFound.matricula, studentFound.nombres, role?.description  );
             const StudentData: any = {
                 matricula: studentFound.matricula,
@@ -79,7 +91,16 @@ class Auth {
                 nombre:studentFound.nombres,
                 email:studentFound.email,
                 teléfono:studentFound.telefono,
-                cve_dependencia: studentFound.cve_dependencia,
+                dependencia: {
+                    id_dependencia: dependency?.id_dependencia,
+                    cve_dependencia: dependency?.cve_dependencia,
+                    nombre_dependencia: dependency?.nombre_dependencia,
+                    direccion: dependency?.direccion
+                },
+                carrera: {
+                    id_carrer: career?.cve_carrera,
+                    nombre_carrera: career?.nombre_carrera
+                },
                 role: {
                     id_role: role?.id_role,
                     description: role?.description
