@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import { check } from 'express-validator';
 import Professor from '../controller/Professor';
 import ValidateInput from '../middlewares/ValidateInput';
 

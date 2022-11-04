@@ -7,7 +7,17 @@ import DependencyModel from "../models/schemas/DependencyModel";
 import CareerModel from '../models/schemas/CareerModel';
 
 class Student {
-    public static async getAll( req: Request, res: Response ): Promise<Response> {
+    public static async getAll( req: any, res: Response ): Promise<Response> {
+        // Todo: check if the role exists
+        const existRole = await RoleModel.findByPk( req.role );
+        if( !existRole ) {
+            return res.status( 404 ).json({ ok: false, message: `El Role '${ existRole }' No existe en la BD` });
+        }
+
+        if( !existRole.description.includes( 'ROLE_ALUMNO' ) && !existRole.description.includes( 'ROLE_ADMIN' ) ) {
+            return res.status( 401 ).json({ ok: false, message: `El Role '${ existRole.description }' No tiene privilegios para acceder a esta Ruta` });
+        }
+
         try {
             const studentList = await ViewStudent.findAll();
             return res.status( 201 ).json({ ok: true, studentList });
@@ -16,8 +26,17 @@ class Student {
         }
     }
 
-    public static async getById( req: Request, res: Response ): Promise<Response> {
+    public static async getById( req: any, res: Response ): Promise<Response> {
         const { id } = req.params;
+        // Todo: check if the role exists
+        const existRole = await RoleModel.findByPk( req.role );
+        if( !existRole ) {
+            return res.status( 404 ).json({ ok: false, message: `El Role '${ existRole }' No existe en la BD` });
+        }
+
+        if( !existRole.description.includes( 'ROLE_ALUMNO' ) && !existRole.description.includes( 'ROLE_ADMIN' ) ) {
+            return res.status( 401 ).json({ ok: false, message: `El Role '${ existRole.description }' No tiene privilegios para acceder a esta Ruta` });
+        }
 
         try {
             const studentFound = await StudentModel.findByPk( id );
@@ -64,7 +83,17 @@ class Student {
         }
     }
 
-    public static async getAllKardex( req: Request, res: Response ): Promise<Response> {
+    public static async getAllKardex( req: any, res: Response ): Promise<Response> {
+        // Todo: check if the role exists
+        const existRole = await RoleModel.findByPk( req.role );
+        if( !existRole ) {
+            return res.status( 404 ).json({ ok: false, message: `El Role '${ existRole }' No existe en la BD` });
+        }
+
+        if( !existRole.description.includes( 'ROLE_ALUMNO' ) && !existRole.description.includes( 'ROLE_ADMIN' ) ) {
+            return res.status( 401 ).json({ ok: false, message: `El Role '${ existRole.description }' No tiene privilegios para acceder a esta Ruta` });
+        }
+
         try {
             const kardexList = await ViewKardex.findAll();
             return res.status( 201 ).json({ ok: true, kardexList });
@@ -73,8 +102,17 @@ class Student {
         }
     }
 
-    public static async getKardexById( req: Request, res: Response ): Promise<Response> {
+    public static async getKardexById( req: any, res: Response ): Promise<Response> {
         const { id } = req.params;
+        // Todo: check if the role exists
+        const existRole = await RoleModel.findByPk( req.role );
+        if( !existRole ) {
+            return res.status( 404 ).json({ ok: false, message: `El Role '${ existRole }' No existe en la BD` });
+        }
+
+        if( !existRole.description.includes( 'ROLE_ALUMNO' ) && !existRole.description.includes( 'ROLE_ADMIN' ) ) {
+            return res.status( 401 ).json({ ok: false, message: `El Role '${ existRole.description }' No tiene privilegios para acceder a esta Ruta` });
+        }
 
         try {
             const kardex = await ViewKardex.findAll({ where: { id: id } });

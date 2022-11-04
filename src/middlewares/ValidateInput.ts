@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import ProfesorModel from '../models/schemas/ProfesorModel';
+import StudentModel from '../models/schemas/StudentModel';
 const jwt = require( 'jsonwebtoken' );
 
 class ValidateInput {
@@ -31,7 +32,7 @@ class ValidateInput {
         const token = req.header( 'Authorization' );
 
         if( !token ) {
-            return res.status( 401 ).json({ ok: false, message: 'There is no token in the request' });
+            return res.status( 401 ).json({ ok: false, message: 'Necesitas un Token para acceder a esta Ruta' });
         }
 
         try {
@@ -41,7 +42,7 @@ class ValidateInput {
             if( !profesorData ) {
                 return res.status( 401 ).json({
                     ok: false,
-                    message: 'Token is not valid - The Professor does not exist in the database'
+                    message: 'Token no es válido - El Profesor No existe En la DB'
                 });
             }
 
@@ -50,7 +51,41 @@ class ValidateInput {
             req.id  = id;
             nex();
         } catch (error) {
-            return res.status( 401 ).json({ ok: false, message: 'The token is not valid' });
+            return res.status( 401 ).json({ ok: false, message: 'El token no es válido - Se Altero la Información del Token' });
+        }
+    }
+
+    /*
+        * We validate @params req check user token
+        * @method: validateJWT
+        * @params req: Request | any - user and token information
+        * @params res: Response - return the response with the status and the message
+        * @params next: NextFunction - call the next function
+    */
+    public static async validateJWTStudent( req: Request | any, res: Response, nex: NextFunction ): Promise<Response | void> {
+        const token = req.header( 'Authorization' );
+
+        if( !token ) {
+            return res.status( 401 ).json({ ok: false, message: 'Necesitas un Token para acceder a esta Ruta' });
+        }
+
+        try {
+            const { id }: any = jwt.verify( token, process.env.SECRET_JWT_SEED || 'secret' );
+            const studentData = await StudentModel.findByPk( id );
+
+            if( !studentData ) {
+                return res.status( 401 ).json({
+                    ok: false,
+                    message: 'Token no es válido - El Alumno No existe En la DB'
+                });
+            }
+
+            req.studentData = studentData;
+            req.role = studentData.id_role;
+            req.id  = id;
+            nex();
+        } catch (error) {
+            return res.status( 401 ).json({ ok: false, message: 'El token no es válido - Se Altero la Información del Token' });
         }
     }
 }

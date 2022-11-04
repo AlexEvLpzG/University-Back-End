@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { check } from 'express-validator';
 import Student from '../controller/Student';
+import ValidateInput from '../middlewares/ValidateInput';
 
 class StudentRoutes {
     public router: Router;
@@ -10,8 +10,14 @@ class StudentRoutes {
     }
 
     private routes() {
-        this.router.get( '/', Student.getAll );
-        this.router.get( '/:id', Student.getById );
+        this.router.get( '/', [
+            ValidateInput.validateJWTStudent,
+            Student.getAll
+        ]);
+        this.router.get( '/:id', [
+            ValidateInput.validateJWTStudent,
+            Student.getById
+        ]);
     }
 }
 
