@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import ViewProfessor from '../models/schemas/view/ViewProfessor';
 import RoleModel from '../models/schemas/RoleModel';
 import DependencyModel from '../models/schemas/DependencyModel';

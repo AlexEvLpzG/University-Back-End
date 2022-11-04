@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { check } from 'express-validator';
 import Student from '../controller/Student';
+import ValidateInput from '../middlewares/ValidateInput';
 
 class KardexRoutes {
     public router: Router;
@@ -10,8 +10,14 @@ class KardexRoutes {
     }
 
     private routes() {
-        this.router.get( '/', Student.getAllKardex );
-        this.router.get( '/:id', Student.getKardexById );
+        this.router.get( '/', [
+            ValidateInput.validateJWTStudent,
+            Student.getAllKardex
+        ]);
+        this.router.get( '/:id', [
+            ValidateInput.validateJWTStudent,
+            Student.getKardexById
+        ]);
     }
 }
 
