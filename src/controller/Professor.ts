@@ -5,7 +5,17 @@ import DependencyModel from '../models/schemas/DependencyModel';
 import ProfesorModel from '../models/schemas/ProfesorModel';
 
 class Professor {
-    public static async getAll( req: Request, res: Response ): Promise<Response> {
+    public static async getAll( req: any, res: Response ): Promise<Response> {
+        // Todo: check if the role exists
+        const existRole = await RoleModel.findByPk( req.role );
+        if( !existRole ) {
+            return res.status( 404 ).json({ ok: false, message: `El Role '${ existRole }' No existe en la BD` });
+        }
+
+        if( !existRole.description.includes( 'ROLE_PROFESOR' ) && !existRole.description.includes( 'ROLE_ADMIN' ) ) {
+            return res.status( 401 ).json({ ok: false, message: `El Role '${ existRole.description }' No tiene privilegios para acceder a esta Ruta` });
+        }
+
         try {
             const professorList = await ViewProfessor.findAll();
             return res.status( 201 ).json({ ok: true, professorList });
@@ -14,8 +24,17 @@ class Professor {
         }
     }
 
-    public static async getById( req: Request, res: Response ): Promise<Response> {
+    public static async getById( req: any, res: Response ): Promise<Response> {
         const { id } = req.params;
+        // Todo: check if the role exists
+        const existRole = await RoleModel.findByPk( req.role );
+        if( !existRole ) {
+            return res.status( 404 ).json({ ok: false, message: `El Role '${ existRole }' No existe en la BD` });
+        }
+
+        if( !existRole.description.includes( 'ROLE_PROFESOR' ) && !existRole.description.includes( 'ROLE_ADMIN' ) ) {
+            return res.status( 401 ).json({ ok: false, message: `El Role '${ existRole.description }' No tiene privilegios para acceder a esta Ruta` });
+        }
 
         try {
             const professorFound = await ProfesorModel.findByPk( id );
