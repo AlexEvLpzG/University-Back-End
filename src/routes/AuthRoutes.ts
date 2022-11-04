@@ -21,7 +21,7 @@ class AuthRoutes {
             ],
             Auth.LoginProfessor
         );
-        
+
         this.router.post( '/login/student',
             [
                 check( 'email', 'El Email es obligatorio' ).not().isEmpty(),
@@ -31,6 +31,17 @@ class AuthRoutes {
                 ValidateInput.validateFields
             ],
             Auth.LoginStudent
+        );
+
+        this.router.post( '/login/admin',
+            [
+                check( 'email', 'El Email es obligatorio' ).not().isEmpty(),
+                check( 'email', 'El email no es válido' ).isEmail(),
+                check( 'password', 'La contraseña es obligatoria' ).not().isEmpty(),
+                check( 'password', 'La contraseña debe tener al menos 6 caracteres y un máximo 16 caracteres' ).isLength({ min: 6, max: 16 }),
+                ValidateInput.validateFields
+            ],
+            Auth.LoginAdmin
         );
     }
 }

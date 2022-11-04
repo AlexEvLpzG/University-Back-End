@@ -15,7 +15,7 @@ class Student {
             return res.status( 404 ).json({ ok: false, message: `El Role '${ existRole }' No existe en la BD` });
         }
 
-        if( !existRole.description.includes( 'ROLE_ALUMNO' ) && !existRole.description.includes( 'ROLE_ADMIN' ) ) {
+        if( !existRole.description.includes( 'ROLE_ADMIN' ) ) {
             return res.status( 401 ).json({ ok: false, message: `El Role '${ existRole.description }' No tiene privilegios para acceder a esta Ruta` });
         }
 

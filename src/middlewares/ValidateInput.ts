@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import ProfesorModel from '../models/schemas/ProfesorModel';
 import StudentModel from '../models/schemas/StudentModel';
+import AdminModel from '../models/schemas/AdminModel';
 const jwt = require( 'jsonwebtoken' );
 
 class ValidateInput {
@@ -38,16 +39,18 @@ class ValidateInput {
         try {
             const { id }: any = jwt.verify( token, process.env.SECRET_JWT_SEED || 'secret' );
             const profesorData = await ProfesorModel.findByPk( id );
+            const adminData = await AdminModel.findByPk( id );
+            const userData = profesorData || adminData;
 
-            if( !profesorData ) {
+            if( !userData ) {
                 return res.status( 401 ).json({
                     ok: false,
                     message: 'Token no es válido - El Profesor No existe En la DB'
                 });
             }
 
-            req.profesorData = profesorData;
-            req.role = profesorData.id_role;
+            req.userData = userData;
+            req.role = userData.id_role;
             req.id  = id;
             nex();
         } catch (error) {
@@ -72,16 +75,18 @@ class ValidateInput {
         try {
             const { id }: any = jwt.verify( token, process.env.SECRET_JWT_SEED || 'secret' );
             const studentData = await StudentModel.findByPk( id );
+            const adminData = await AdminModel.findByPk( id );
+            const userData = studentData || adminData;
 
-            if( !studentData ) {
+            if( !userData ) {
                 return res.status( 401 ).json({
                     ok: false,
                     message: 'Token no es válido - El Alumno No existe En la DB'
                 });
             }
 
-            req.studentData = studentData;
-            req.role = studentData.id_role;
+            req.userData = userData;
+            req.role = userData.id_role;
             req.id  = id;
             nex();
         } catch (error) {

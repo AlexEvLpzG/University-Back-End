@@ -6,6 +6,7 @@ import Jwt from '../helpers/Jwt';
 import RoleModel from '../models/schemas/RoleModel';
 import DependencyModel from '../models/schemas/DependencyModel';
 import CareerModel from '../models/schemas/CareerModel';
+import AdminModel from '../models/schemas/AdminModel';
 
 class Auth {
     public static async LoginProfessor( req: Request, res: Response ): Promise<Response> {
@@ -108,6 +109,48 @@ class Auth {
             };
 
             return res.status( 201 ).json({ ok: true, StudentData, Token });
+        } catch ( error ) {
+            return  res.status(500).json({ ok: false, message: error });
+        }
+    }
+
+    public static async LoginAdmin( req: Request, res: Response ): Promise<Response> {
+        const { email, password } = req.body;
+
+        try {
+            const adminFound = await AdminModel.findOne({ where: { email } });
+
+            if( !adminFound ) {
+                return res.status(400).json({
+                    ok: false,
+                    message: 'Email / Password incorrect - Email does not exist'
+                });
+            }
+
+            const validPassword = bcryptjs.compareSync( password, adminFound.password );
+
+            if( !validPassword ) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: 'Email / Password incorrect - Email does not exist - Password incorrecto'
+                });
+            }
+
+            const role = await RoleModel.findByPk( adminFound.id_role );
+            const Token = await Jwt.generateJWT( adminFound.id_admin, adminFound.nombre, role?.description  );
+            const AdminData: any = {
+                id_admin: adminFound.id_admin,
+                nombre: adminFound.nombre,
+                ape_pat: adminFound.ape_pat,
+                ape_mat: adminFound.ape_mat,
+                email: adminFound.email,
+                role: {
+                    id_role: role?.id_role,
+                    description: role?.description
+                }
+            };
+
+            return res.status( 201 ).json({ ok: true, AdminData, Token });
         } catch ( error ) {
             return  res.status(500).json({ ok: false, message: error });
         }
