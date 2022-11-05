@@ -6,7 +6,7 @@ interface ViewDocumentsIntance extends Model {
         nombre_carrera: string;
         ape_pat: string;
         ape_mat: string;
-        nombres: string;
+        nombre: string;
         matricula: string;
         semestre: string;
         calificación: Number;
@@ -27,7 +27,7 @@ const ViewKardex = DBConfig.define<ViewDocumentsIntance>( 'kardex_views', {
         ape_mat: {
                 type: DataTypes.STRING
         },
-        nombres: {
+        nombre: {
             type: DataTypes.STRING
         },
         matricula: {

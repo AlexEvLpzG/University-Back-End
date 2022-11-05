@@ -16,7 +16,7 @@ class StudentRoutes {
             check( 'matricula', 'El matricula es obligatorio' ).not().isEmpty(),
             check( 'ape_pat', 'El ape_pat es obligatorio' ).not().isEmpty(),
             check( 'ape_mat', 'El ape_mat es obligatorio' ).not().isEmpty(),
-            check( 'nombres', 'El nombres es obligatorio' ).not().isEmpty(),
+            check( 'nombre', 'El nombre es obligatorio' ).not().isEmpty(),
             check( 'curp', 'El curp es obligatorio' ).not().isEmpty(),
             check( 'genero', 'El genero es obligatorio' ).not().isEmpty(),
             check( 'est_civil', 'El est_civil es obligatorio' ).not().isEmpty(),

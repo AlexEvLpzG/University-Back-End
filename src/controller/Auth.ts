@@ -27,14 +27,15 @@ class Auth {
             if( !validPassword ) {
                 return res.status(400).json({
                     ok: false,
-                    msg: 'Email / Password incorrect - Email does not exist - Password incorrecto'
+                    message: 'Email / Password incorrect - Email does not exist - Password incorrecto'
                 });
             }
 
             const role = await RoleModel.findByPk( professorFound.id_role );
             const dependency = await DependencyModel.findOne({ where: { cve_dependencia: professorFound.cve_dependencia } });
             const Token = await Jwt.generateJWT( professorFound.cve_profesor, professorFound.nombre, role?.description  );
-            const ProfessorData: any = {
+            const UserData: any = {
+                id: professorFound.cve_profesor,
                 cve_profesor: professorFound.cve_profesor,
                 ape_pat:professorFound.ape_pat,
                 ape_mat:professorFound.ape_mat,
@@ -53,7 +54,7 @@ class Auth {
                 }
             };
 
-            return res.status( 201 ).json({ ok: true, ProfessorData, Token });
+            return res.status( 200 ).json({ ok: true, UserData, Token });
         } catch ( error ) {
             return  res.status(500).json({ ok: false, message: error });
         }
@@ -77,19 +78,20 @@ class Auth {
             if( !validPassword ) {
                 return res.status(400).json({
                     ok: false,
-                    msg: 'Email / Password incorrect - Email does not exist - Password incorrecto'
+                    message: 'Email / Password incorrect - Email does not exist - Password incorrecto'
                 });
             }
 
             const role = await RoleModel.findByPk( studentFound.id_role );
             const dependency = await DependencyModel.findOne({ where: { cve_dependencia: studentFound.cve_dependencia } });
             const career = await CareerModel.findOne({ where: { cve_carrera: studentFound.cve_carrera } });
-            const Token = await Jwt.generateJWT( studentFound.matricula, studentFound.nombres, role?.description  );
-            const StudentData: any = {
+            const Token = await Jwt.generateJWT( studentFound.matricula, studentFound.nombre, role?.description  );
+            const UserData: any = {
+                id: studentFound.matricula,
                 matricula: studentFound.matricula,
                 ape_pat:studentFound.ape_pat,
                 ape_mat:studentFound.ape_mat,
-                nombre:studentFound.nombres,
+                nombre:studentFound.nombre,
                 email:studentFound.email,
                 teléfono:studentFound.telefono,
                 dependencia: {
@@ -108,7 +110,7 @@ class Auth {
                 }
             };
 
-            return res.status( 201 ).json({ ok: true, StudentData, Token });
+            return res.status( 200 ).json({ ok: true, UserData, Token });
         } catch ( error ) {
             return  res.status(500).json({ ok: false, message: error });
         }
@@ -132,14 +134,14 @@ class Auth {
             if( !validPassword ) {
                 return res.status(400).json({
                     ok: false,
-                    msg: 'Email / Password incorrect - Email does not exist - Password incorrecto'
+                    message: 'Email / Password incorrect - Email does not exist - Password incorrecto'
                 });
             }
 
             const role = await RoleModel.findByPk( adminFound.id_role );
             const Token = await Jwt.generateJWT( adminFound.id_admin, adminFound.nombre, role?.description  );
-            const AdminData: any = {
-                id_admin: adminFound.id_admin,
+            const UserData: any = {
+                id: adminFound.id_admin,
                 nombre: adminFound.nombre,
                 ape_pat: adminFound.ape_pat,
                 ape_mat: adminFound.ape_mat,
@@ -150,7 +152,7 @@ class Auth {
                 }
             };
 
-            return res.status( 201 ).json({ ok: true, AdminData, Token });
+            return res.status( 200 ).json({ ok: true, UserData, Token });
         } catch ( error ) {
             return  res.status(500).json({ ok: false, message: error });
         }

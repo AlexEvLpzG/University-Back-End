@@ -13,7 +13,7 @@ const StudentModel = DBConfig.define<StudentDocumentsInstance>( 'uni_alumnos', {
     ape_mat: {
         type: DataTypes.STRING
     },
-    nombres: {
+    nombre: {
         type: DataTypes.STRING
     },
     curp: {

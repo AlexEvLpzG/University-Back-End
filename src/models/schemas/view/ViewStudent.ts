@@ -9,7 +9,7 @@ const ViewStudent = DBConfig.define<StudentDocumentsInstance>( 'estudiantes_view
     ape_mat: {
         type: DataTypes.STRING
     },
-    nombres: {
+    nombre: {
         type: DataTypes.STRING
     },
     curp: {

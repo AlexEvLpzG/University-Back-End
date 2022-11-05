@@ -23,7 +23,7 @@ class Student {
         try {
             const studentFound = await StudentModel.findByPk( matricula );
             if( studentFound ) {
-                return res.status(404).json({ ok: false, msg: `Actualmente ya existe un Alumno con la matricula ${ matricula }` });
+                return res.status(404).json({ ok: false, message: `Actualmente ya existe un Alumno con la matricula ${ matricula }` });
             };
 
             const dependencyFound = await DependencyModel.findOne({ where: { cve_dependencia: cve_dependencia } });
@@ -62,7 +62,7 @@ class Student {
 
         try {
             const studentList = await ViewStudent.findAll();
-            return res.status( 201 ).json({ ok: true, studentList });
+            return res.status( 200 ).json({ ok: true, studentList });
         } catch ( error ) {
             return  res.status(500).json({ ok: false, message: error });
         }
@@ -81,9 +81,9 @@ class Student {
         }
 
         try {
-            const studentFound = await StudentModel.findByPk( id );
+            const studentFound = await ViewStudent.findByPk( id );
             if( !studentFound ) {
-                return res.status(404).json({ msg: `student with id ${ id } not found` });
+                return res.status(404).json({ message: `student with id ${ id } not found` });
             }
 
             if( !studentFound ) {
@@ -93,33 +93,7 @@ class Student {
                 });
             }
 
-            const role = await RoleModel.findByPk( studentFound.id_role );
-            const dependency = await DependencyModel.findOne({ where: { cve_dependencia: studentFound.cve_dependencia } });
-            const career = await CareerModel.findOne({ where: { cve_carrera: studentFound.cve_carrera } });
-            const StudentData: any = {
-                matricula: studentFound.matricula,
-                ape_pat:studentFound.ape_pat,
-                ape_mat:studentFound.ape_mat,
-                nombre:studentFound.nombres,
-                email:studentFound.email,
-                teléfono:studentFound.telefono,
-                dependencia: {
-                    id_dependencia: dependency?.id_dependencia,
-                    cve_dependencia: dependency?.cve_dependencia,
-                    nombre_dependencia: dependency?.nombre_dependencia,
-                    direccion: dependency?.direccion
-                },
-                carrera: {
-                    id_carrer: career?.cve_carrera,
-                    nombre_carrera: career?.nombre_carrera
-                },
-                role: {
-                    id_role: role?.id_role,
-                    description: role?.description
-                }
-            };
-
-            return res.status( 201 ).json({ ok: true, StudentData });
+            return res.status( 200 ).json({ ok: true, UserData: studentFound });
         } catch (error) {
             return  res.status(500).json({ ok: false, message: 'There was an error searching for the students' });
         }
@@ -138,7 +112,7 @@ class Student {
 
         try {
             const kardexList = await ViewKardex.findAll();
-            return res.status( 201 ).json({ ok: true, kardexList });
+            return res.status( 200 ).json({ ok: true, kardexList });
         } catch ( error ) {
             return  res.status(500).json({ ok: false, message: error });
         }
@@ -159,10 +133,10 @@ class Student {
         try {
             const kardex = await ViewKardex.findAll({ where: { id: id } });
             if( !kardex ) {
-                return res.status(404).json({ msg: `kardex with id ${ id } not found` });
+                return res.status(404).json({ message: `kardex with id ${ id } not found` });
             }
 
-            return res.status( 201 ).json({ ok: true, kardex });
+            return res.status( 200 ).json({ ok: true, kardex });
         } catch (error) {
             return  res.status(500).json({ ok: false, message: 'There was an error searching for the kardex' });
         }

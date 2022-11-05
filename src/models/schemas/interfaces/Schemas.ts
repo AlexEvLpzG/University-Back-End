@@ -4,7 +4,7 @@ export interface StudentDocumentsInstance extends Model {
     matricula: string;
     ape_pat: string;
     ape_mat: string;
-    nombres: string;
+    nombre: string;
     curp: string;
     genero: number;
     est_civil: string;

@@ -18,7 +18,7 @@ class Professor {
 
         try {
             const professorList = await ViewProfessor.findAll();
-            return res.status( 201 ).json({ ok: true, professorList });
+            return res.status( 200 ).json({ ok: true, professorList });
         } catch ( error ) {
             return  res.status(500).json({ ok: false, message: error });
         }
@@ -39,7 +39,7 @@ class Professor {
         try {
             const professorFound = await ProfesorModel.findByPk( id );
             if( !professorFound ) {
-                return res.status(404).json({ msg: `Professor with id ${ id } not found` });
+                return res.status(404).json({ message: `Professor with id ${ id } not found` });
             }
 
             if( !professorFound ) {
@@ -51,7 +51,8 @@ class Professor {
 
             const role = await RoleModel.findByPk( professorFound.id_role );
             const dependency = await DependencyModel.findOne({ where: { cve_dependencia: professorFound.cve_dependencia } });
-            const ProfessorData: any = {
+            const UserData: any = {
+                id: professorFound.cve_profesor,
                 cve_profesor: professorFound.cve_profesor,
                 ape_pat:professorFound.ape_pat,
                 ape_mat:professorFound.ape_mat,
@@ -70,7 +71,7 @@ class Professor {
                 }
             };
 
-            return res.status( 201 ).json({ ok: true, ProfessorData });
+            return res.status( 200 ).json({ ok: true, UserData });
         } catch (error) {
             return  res.status(500).json({ ok: false, message: 'There was an error searching for the Professors' });
         }
