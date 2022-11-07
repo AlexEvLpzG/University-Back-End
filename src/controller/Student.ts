@@ -23,29 +23,32 @@ class Student {
         try {
             const studentFound = await StudentModel.findByPk( matricula );
             if( studentFound ) {
-                return res.status(404).json({ ok: false, message: `Actualmente ya existe un Alumno con la matricula ${ matricula }` });
+                return res.status(404).json({ ok: false, errors: { errors:[{ msg: `Actualmente ya existe un Alumno con la matricula ${ matricula }` }] } });
             };
-
+            const studentEmailFound = await StudentModel.findOne({ where: { email: req.body.email } });
+            if( studentEmailFound ) {
+                return res.status(404).json({ ok: false, errors: { errors:[{ msg: `Actualmente ya existe un Alumno con el Email ${ req.body.email }` }] } });
+            };
             const dependencyFound = await DependencyModel.findOne({ where: { cve_dependencia: cve_dependencia } });
             if( !dependencyFound ) {
-                return res.status( 404 ).json({ ok: false, message: `No existe ninguna Dependencia con el ID: '${ cve_dependencia }'` });
+                return res.status( 404 ).json({ ok: false, errors: { errors:[{ msg: `No existe ninguna Dependencia con el ID: '${ cve_dependencia }'` }] } });
             }
             const careerFound = await CareerModel.findByPk( cve_carrera );
             if( !careerFound ) {
-                return res.status( 404 ).json({ ok: false, message: `No existe ninguna Carrera con el ID: '${ cve_carrera }'` });
+                return res.status( 404 ).json({ ok: false, errors: { errors:[{ msg: `No existe ninguna Carrera con el ID: '${ cve_carrera }'` }] } });
             }
 
             // * Encriptar la contraseña
             const salt = bcryptjs.genSaltSync();
             req.body.password = bcryptjs.hashSync( req.body.password, salt );
-            req.id_role = 4;
+            req.body.id_role = 4;
             const student = StudentModel.build( req.body );
             // * Guardar en BD
             await student.save();
 
-            return res.status( 201 ).json({ ok: true, student });
+            return res.status( 201 ).json({ ok: true, body:req.body });
         } catch (error) {
-            return  res.status(500).json({ ok: false, message: 'There was an error searching for the students' });
+            return  res.status(500).json({ ok: false, error: error });
         }
     }
 
@@ -131,7 +134,7 @@ class Student {
         }
 
         try {
-            const kardex = await ViewKardex.findAll({ where: { id: id } });
+            const kardex = await ViewKardex.findAll({ where: { matricula: id } });
             if( !kardex ) {
                 return res.status(404).json({ message: `kardex with id ${ id } not found` });
             }

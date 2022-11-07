@@ -18,7 +18,7 @@ class Auth {
             if( !professorFound ) {
                 return res.status(400).json({
                     ok: false,
-                    message: 'Email / Password incorrect - Email does not exist'
+                    errors: { errors:[{ msg: 'Email / Password incorrect - Email does not exist' }] }
                 });
             }
 
@@ -27,7 +27,7 @@ class Auth {
             if( !validPassword ) {
                 return res.status(400).json({
                     ok: false,
-                    message: 'Email / Password incorrect - Email does not exist - Password incorrecto'
+                    errors: { errors:[{ msg: 'Email / Password incorrect - Email does not exist - Password incorrecto' }] }
                 });
             }
 
@@ -69,7 +69,7 @@ class Auth {
             if( !studentFound ) {
                 return res.status(400).json({
                     ok: false,
-                    message: 'Email / Password incorrect - Email does not exist'
+                    errors: { errors:[{ msg: 'Email / Password incorrect - Email does not exist' }] }
                 });
             }
 
@@ -78,7 +78,7 @@ class Auth {
             if( !validPassword ) {
                 return res.status(400).json({
                     ok: false,
-                    message: 'Email / Password incorrect - Email does not exist - Password incorrecto'
+                    errors: { errors:[{ msg: 'Email / Password incorrect - Email does not exist - Password incorrecto' }] }
                 });
             }
 
@@ -125,7 +125,7 @@ class Auth {
             if( !adminFound ) {
                 return res.status(400).json({
                     ok: false,
-                    message: 'Email / Password incorrect - Email does not exist'
+                    errors: { errors:[{ msg: 'Email / Password incorrect - Email does not exist' }] }
                 });
             }
 
@@ -134,7 +134,7 @@ class Auth {
             if( !validPassword ) {
                 return res.status(400).json({
                     ok: false,
-                    message: 'Email / Password incorrect - Email does not exist - Password incorrecto'
+                    errors: { errors:[{ msg: 'Email / Password incorrect - Email does not exist - Password incorrecto' }] }
                 });
             }
 
